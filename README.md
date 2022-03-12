@@ -35,6 +35,10 @@ I'm too lazy to link them to source code, please search on [cs.chromium.org](htt
 
     Because Chromium browser process has no Internet access.
 
+2. It's stuck after entering process ID
+
+    It's downloading PDB file (around 380MB), so wait a moment.
+
 ## Build
 
 1. Build normally in Visual Studio
