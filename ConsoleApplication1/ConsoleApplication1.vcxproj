@@ -146,6 +146,19 @@
   <ItemGroup>
     <ClInclude Include="DbgHelp.h" />
   </ItemGroup>
+  <ItemGroup>
+    <CopyFileToFolders Include="..\dbghelp.dll">
+      <FileType>Document</FileType>
+    </CopyFileToFolders>
+  </ItemGroup>
+  <ItemGroup>
+    <CopyFileToFolders Include="..\symsrv.dll">
+      <FileType>Document</FileType>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="..\symsrv.yes">
+      <FileType>Document</FileType>
+    </CopyFileToFolders>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

@@ -238,7 +238,19 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 		auto command_line = command_line_for_current_process();
 		//MessageBox(nullptr, to_hex((int64_t)command_line).c_str(), L"Got command line", 0);
 
-		auto command_line_append_switch_ascii = (void(*)(void*, StringPiece, StringPiece))find_function(L"msedge.dll", "?AppendSwitchASCII@CommandLine@base@@QEAAXV?$BasicStringPiece@DU?$char_traits@D@__1@std@@@2@0@Z");
+		void(*command_line_append_switch_ascii)(void*, StringPiece, StringPiece) = nullptr;
+		// Chrome 105:
+		//     ?AppendSwitchASCII@CommandLine@base@@QEAAXV?$BasicStringPiece@DU?$char_traits@D@__1@std@@@2@0@Z
+		//     public: void __cdecl base::CommandLine::AppendSwitchASCII(class base::BasicStringPiece<char,struct std::Cr::char_traits<char> >,class base::BasicStringPiece<char,struct std::Cr::char_traits<char> >) __ptr64
+		// Chrome 9x:
+		//     ?AppendSwitchASCII@CommandLine@base@@QEAAXV?$BasicStringPiece@DU?$char_traits@D@Cr@std@@@2@0@Z
+		//     ???
+		for (auto name : { "?AppendSwitchASCII@CommandLine@base@@QEAAXV?$BasicStringPiece@DU?$char_traits@D@__1@std@@@2@0@Z","?AppendSwitchASCII@CommandLine@base@@QEAAXV?$BasicStringPiece@DU?$char_traits@D@Cr@std@@@2@0@Z" }) {
+			command_line_append_switch_ascii = (void(*)(void*, StringPiece, StringPiece))find_function(L"msedge.dll", name);
+			if (command_line_append_switch_ascii != nullptr) {
+				break;
+			}
+		}
 		// MessageBox(nullptr, to_hex((int64_t)command_line_append_switch_ascii).c_str(), L"CommandLine::AppendSwitchASCII", 0);
 		if (!command_line_append_switch_ascii) {
 			MessageBox(nullptr, L"Can't find CommandLine::AppendSwitchASCII", L"Error", 0);
